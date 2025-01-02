@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"go-server/adapters"
 	"go-server/core"
 	"log"
 	"os"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -21,6 +23,8 @@ const (
 )
 
 func main() {
+
+	app := fiber.New()
 	// Configure your PostgreSQL database details here
 	dsn := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -44,10 +48,16 @@ func main() {
 		panic("failed to connect to database")
 	}
 
+	//Implement Port Hexagonal Arc {Secondary to Primary Port}
+	userRepo := adapters.NewGormUserRepository(db)
+	userService := core.NewUserService(userRepo)
+	userHandler := adapters.NewHttpUserHandler(userService)
+
+	app.Post("/user/register", userHandler.RegisterUser)
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	fmt.Println("Database migration completed!")
-
+	app.Listen((":8000"))
 	// newBook := &Book{Name: "Think Again", Author: "adam", Description: "test", price: 200}
 
 	// createBook(db, newBook)
