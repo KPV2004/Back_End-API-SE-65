@@ -57,7 +57,7 @@ func main() {
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	fmt.Println("Database migration completed!")
-
+	app.Listen((":8000"))
 	// newBook := &Book{Name: "Think Again", Author: "adam", Description: "test", price: 200}
 
 	// createBook(db, newBook)
