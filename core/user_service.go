@@ -21,7 +21,7 @@ func (s *userServiceImpl) CreateUser(user User) error {
 }
 
 func (s *userServiceImpl) FindByUsername(username string) (User, error) {
-	user, err := s.repo.FindByUsername(username)
+	user, err := s.repo.GetUserData(username)
 	if err != nil {
 		return user, err
 	}
