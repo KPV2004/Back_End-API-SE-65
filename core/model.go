@@ -1,10 +1,14 @@
 package core
 
 type User struct {
-	ID       uint
-	Name     string
-	Password string
-	Email    string
-	Tel      string
-	FullName string
+	ID          uint
+	Username    string
+	Password    string
+	Email       string
+	Tel         string
+	Firstname   string
+	Lastname    string
+	DateOfBirth string
+	Gender      string
+	Otp         string
 }
