@@ -20,3 +20,11 @@ func (r *GormUserRepository) Save(user core.User) error {
 	}
 	return nil
 }
+
+func (r *GormUserRepository) FindByUsername(username string) (core.User, error) {
+	var user core.User
+	if result := r.db.Where("username = ?", username).First(&user); result.Error != nil {
+		return user, result.Error
+	}
+	return user, nil
+}
