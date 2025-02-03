@@ -6,9 +6,12 @@ import (
 	"go-server/core"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
+	"gopkg.in/gomail.v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -48,10 +51,33 @@ func main() {
 		panic("failed to connect to database")
 	}
 
+	env_err := godotenv.Load()
+	if env_err != nil {
+		// log.Fatal("Error loading .env file")
+		panic("Error loading .env file")
+	}
+
+	smtpHost := os.Getenv("MAILER_HOST")
+	smtpPort, _ := strconv.Atoi(os.Getenv("MAILER_PORT")) // Convert port to int
+	// smtpUser := os.Getenv("MAILER_USER")
+	// smtpPass := os.Getenv("MAILER_PASS")
+	smtpUser := "semailsender01@gmail.com"
+	smtpPass := "wvftmcwyaexvzoui"
+
+	dialer := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
+	// MAILER_HOST=smtp.gmail.com
+	// MAILER_PORT=587
+	// MAILER_USERNAME=username@gmail.com
+	// MAILER_PASSWORD=password
+
 	//Implement Port Hexagonal Arc {Secondary to Primary Port}
 	userRepo := adapters.NewGormUserRepository(db)
 	userService := core.NewUserService(userRepo)
-	userHandler := adapters.NewHttpUserHandler(userService)
+	// userHandler := adapters.NewHttpUserHandler(userService)
+	emailRepo := adapters.NewEmailRepository(dialer)
+	emailService := core.NewEmailService(emailRepo)
+	// Assuming core.NewEmailService(emailRepo) creates an email service
+	userHandler := adapters.NewHttpUserHandler(userService, emailService)
 
 	app.Post("/user/register", userHandler.RegisterUser)
 	app.Get("/user/getuser/:email", userHandler.GetUser)
