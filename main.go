@@ -59,10 +59,8 @@ func main() {
 
 	smtpHost := os.Getenv("MAILER_HOST")
 	smtpPort, _ := strconv.Atoi(os.Getenv("MAILER_PORT")) // Convert port to int
-	// smtpUser := os.Getenv("MAILER_USER")
-	// smtpPass := os.Getenv("MAILER_PASS")
-	smtpUser := "semailsender01@gmail.com"
-	smtpPass := "wvftmcwyaexvzoui"
+	smtpUser := os.Getenv("MAILER_USERNAME")
+	smtpPass := os.Getenv("MAILER_PASSWORD")
 
 	dialer := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
 
