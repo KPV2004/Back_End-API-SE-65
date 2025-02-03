@@ -28,3 +28,10 @@ func (r *GormUserRepository) GetUserData(email string) (core.User, error) {
 	}
 	return user, nil
 }
+
+func (r *GormUserRepository) SaveVerifly(verifly core.Verification) error {
+	if result := r.db.Create(&verifly); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

@@ -29,19 +29,6 @@ func (h *HttpUserHandler) RegisterUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
 	}
 
-	//random 4 digit OTP
-	rand.Seed(time.Now().UnixNano())
-	otpInt := rand.Intn(9000) + 1000
-	opt := strconv.Itoa(otpInt)
-
-	//set otp to user
-	user.Otp = opt
-	//send otp to user email
-	err_mail := h.service_email.Message(opt, user.Email)
-	if err_mail != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
-	}
-
 	return c.Status(fiber.StatusCreated).JSON(user)
 }
 
@@ -53,4 +40,30 @@ func (h *HttpUserHandler) GetUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
 	}
 	return c.Status(fiber.StatusOK).JSON(user)
+}
+
+func (h *HttpUserHandler) GenOTP(c *fiber.Ctx) error {
+	email := c.Params("email")
+	fmt.Println(email)
+	var verifly core.Verification
+
+	//random 4 digit OTP
+	rand.Seed(time.Now().UnixNano())
+	otpInt := rand.Intn(9000) + 1000
+	opt := strconv.Itoa(otpInt)
+
+	verifly.Email = email
+	verifly.Otp = opt
+
+	if err := h.service.CreateVerifly(verifly); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+	//send otp to user email
+
+	err_mail := h.service_email.Message(opt, verifly.Email)
+	if err_mail != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "OTP sent to your email"})
 }

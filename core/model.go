@@ -1,7 +1,10 @@
 package core
 
+import "gorm.io/gorm"
+
 type User struct {
-	ID          uint
+	gorm.Model
+	// ID          uint
 	Username    string
 	Password    string
 	Email       string
@@ -10,5 +13,10 @@ type User struct {
 	Lastname    string
 	DateOfBirth string
 	Gender      string
-	Otp         string
+	isVerified  bool
+}
+
+type Verification struct {
+	Otp   string
+	Email string
 }

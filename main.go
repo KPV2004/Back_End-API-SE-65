@@ -65,10 +65,6 @@ func main() {
 	smtpPass := "wvftmcwyaexvzoui"
 
 	dialer := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
-	// MAILER_HOST=smtp.gmail.com
-	// MAILER_PORT=587
-	// MAILER_USERNAME=username@gmail.com
-	// MAILER_PASSWORD=password
 
 	//Implement Port Hexagonal Arc {Secondary to Primary Port}
 	userRepo := adapters.NewGormUserRepository(db)
@@ -81,8 +77,11 @@ func main() {
 
 	app.Post("/user/register", userHandler.RegisterUser)
 	app.Get("/user/getuser/:email", userHandler.GetUser)
+	app.Get("/user/genotp/:email", userHandler.GenOTP)
+
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
+	db.AutoMigrate(&core.Verification{})
 	fmt.Println("Database migration completed!")
 	app.Listen((":8000"))
 	// newBook := &Book{Name: "Think Again", Author: "adam", Description: "test", price: 200}
