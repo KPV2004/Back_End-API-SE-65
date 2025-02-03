@@ -4,6 +4,7 @@ type UserService interface {
 	CreateUser(user User) error               // CreateUser creates a new user
 	FindByEmail(email string) (User, error)   // FindByEmail returns a user by username
 	CreateVerifly(verifly Verification) error // CreateVerifly creates a new verification
+	VerificationOTP(verifly Verification) error
 }
 
 type userServiceImpl struct {
@@ -35,4 +36,11 @@ func (s *userServiceImpl) FindByEmail(email string) (User, error) {
 		return user, err
 	}
 	return user, nil
+}
+
+func (s *userServiceImpl) VerificationOTP(verifly Verification) error {
+	if err := s.repo.VerificationOTP(verifly.Email, verifly.Otp); err != nil {
+		return err
+	}
+	return nil
 }

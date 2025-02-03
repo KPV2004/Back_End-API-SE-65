@@ -13,7 +13,6 @@ type User struct {
 	Lastname    string
 	DateOfBirth string
 	Gender      string
-	isVerified  bool
 }
 
 type Verification struct {

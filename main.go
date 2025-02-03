@@ -78,6 +78,7 @@ func main() {
 	app.Post("/user/register", userHandler.RegisterUser)
 	app.Get("/user/getuser/:email", userHandler.GetUser)
 	app.Get("/user/genotp/:email", userHandler.GenOTP)
+	app.Post("/user/verifyotp", userHandler.VerifyOTP)
 
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
