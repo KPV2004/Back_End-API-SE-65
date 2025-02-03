@@ -54,6 +54,7 @@ func main() {
 	userHandler := adapters.NewHttpUserHandler(userService)
 
 	app.Post("/user/register", userHandler.RegisterUser)
+	app.Get("/user/getuser/:email", userHandler.GetUser)
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	fmt.Println("Database migration completed!")

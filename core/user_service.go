@@ -1,8 +1,8 @@
 package core
 
 type UserService interface {
-	CreateUser(user User) error                   // CreateUser creates a new user
-	FindByUsername(username string) (User, error) // FindByUsername returns a user by username
+	CreateUser(user User) error             // CreateUser creates a new user
+	FindByEmail(email string) (User, error) // FindByEmail returns a user by username
 }
 
 type userServiceImpl struct {
@@ -20,8 +20,9 @@ func (s *userServiceImpl) CreateUser(user User) error {
 	return nil
 }
 
-func (s *userServiceImpl) FindByUsername(username string) (User, error) {
-	user, err := s.repo.GetUserData(username)
+func (s *userServiceImpl) FindByEmail(email string) (User, error) {
+
+	user, err := s.repo.GetUserData(email)
 	if err != nil {
 		return user, err
 	}
