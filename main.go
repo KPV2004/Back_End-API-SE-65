@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 	"gopkg.in/gomail.v2"
 	"gorm.io/driver/postgres"
@@ -29,6 +30,13 @@ func main() {
 
 	app := fiber.New()
 	// Configure your PostgreSQL database details here
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*", // Change this to your frontend domain for security
+		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
+
 	dsn := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
