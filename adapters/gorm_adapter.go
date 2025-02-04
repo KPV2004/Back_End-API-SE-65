@@ -35,3 +35,11 @@ func (r *GormUserRepository) SaveVerifly(verifly core.Verification) error {
 	}
 	return nil
 }
+
+func (r *GormUserRepository) VerificationOTP(email string, OTP string) error {
+	var verifly core.Verification
+	if result := r.db.Where("email = ? AND otp = ?", email, OTP).First(&verifly); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

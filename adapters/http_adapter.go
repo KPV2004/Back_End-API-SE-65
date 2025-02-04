@@ -67,3 +67,20 @@ func (h *HttpUserHandler) GenOTP(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "OTP sent to your email"})
 }
+
+func (h *HttpUserHandler) VerifyOTP(c *fiber.Ctx) error {
+	var verify core.Verification
+	// email := c.Params("email")
+	// otp := c.Params("otp")
+	// fmt.Println(email)
+	// fmt.Println(otp)
+	if err := c.BodyParser(&verify); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+
+	if err := h.service.VerificationOTP(verify); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Invalid OTP"})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "OTP verified"})
+}
