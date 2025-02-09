@@ -95,7 +95,7 @@ func (h *HttpUserHandler) RegisterAdmin(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(admin)
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Register Sucessfully!"})
 }
 
 func (h *HttpUserHandler) LoginAdmin(c *fiber.Ctx) error {
