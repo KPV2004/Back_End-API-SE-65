@@ -1,8 +1,10 @@
 package core
 
 type UserRepository interface {
-	Save(user User) error
-	SaveVerifly(verifly Verification) error
+	SaveUser(user User) error
+	SaveAdmin(admin Admin) error
+	LoginAdmin(username string, password string) error
+	SaveVerify(verify Verification) error
 	GetUserData(email string) (User, error)
 	VerificationOTP(email string, OTP string) error
 }

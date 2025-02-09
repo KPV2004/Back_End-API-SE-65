@@ -14,8 +14,23 @@ func NewGormUserRepository(db *gorm.DB) core.UserRepository {
 	return &GormUserRepository{db: db}
 }
 
-func (r *GormUserRepository) Save(user core.User) error {
+func (r *GormUserRepository) SaveUser(user core.User) error {
 	if result := r.db.Create(&user); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *GormUserRepository) SaveAdmin(admin core.Admin) error {
+	if result := r.db.Create(&admin); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *GormUserRepository) LoginAdmin(username string, password string) error {
+	var admin core.Admin
+	if result := r.db.Where("username = ? AND password = ? ", username, password).First(&admin); result.Error != nil {
 		return result.Error
 	}
 	return nil
@@ -29,7 +44,7 @@ func (r *GormUserRepository) GetUserData(email string) (core.User, error) {
 	return user, nil
 }
 
-func (r *GormUserRepository) SaveVerifly(verifly core.Verification) error {
+func (r *GormUserRepository) SaveVerify(verifly core.Verification) error {
 	if result := r.db.Create(&verifly); result.Error != nil {
 		return result.Error
 	}

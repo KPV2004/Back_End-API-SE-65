@@ -86,8 +86,12 @@ func main() {
 	app.Get("/user/genotp/:email", userHandler.GenOTP)
 	app.Post("/user/verifyotp", userHandler.VerifyOTP)
 
+	app.Post("/admin/register", userHandler.RegisterAdmin)
+	app.Post("/admin/login", userHandler.LoginAdmin)
+
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
+	db.AutoMigrate(&core.Admin{})
 	db.AutoMigrate(&core.Verification{})
 	fmt.Println("Database migration completed!")
 	app.Listen(("0.0.0.0:8000"))

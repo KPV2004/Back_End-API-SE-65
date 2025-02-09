@@ -84,3 +84,29 @@ func (h *HttpUserHandler) VerifyOTP(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "OTP verified"})
 }
+
+func (h *HttpUserHandler) RegisterAdmin(c *fiber.Ctx) error {
+	var admin core.Admin
+
+	if err := c.BodyParser(&admin); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+	if err := h.service.CreateAdmin(admin); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(admin)
+}
+
+func (h *HttpUserHandler) LoginAdmin(c *fiber.Ctx) error {
+	var admin core.Admin
+
+	if err := c.BodyParser(&admin); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+	if err := h.service.LoginAdmin(admin); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Login Sucessfully!"})
+}

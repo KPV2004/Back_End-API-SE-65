@@ -2,9 +2,11 @@ package core
 
 type UserService interface {
 	CreateUser(user User) error               // CreateUser creates a new user
+	CreateAdmin(admin Admin) error            // CreateAdmin creates a new admin
 	FindByEmail(email string) (User, error)   // FindByEmail returns a user by username
 	CreateVerifly(verifly Verification) error // CreateVerifly creates a new verification
 	VerificationOTP(verifly Verification) error
+	LoginAdmin(admin Admin) error
 }
 
 type userServiceImpl struct {
@@ -16,14 +18,21 @@ func NewUserService(repo UserRepository) UserService {
 }
 
 func (s *userServiceImpl) CreateUser(user User) error {
-	if err := s.repo.Save(user); err != nil {
+	if err := s.repo.SaveUser(user); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userServiceImpl) CreateAdmin(admin Admin) error {
+	if err := s.repo.SaveAdmin(admin); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (s *userServiceImpl) CreateVerifly(verifly Verification) error {
-	if err := s.repo.SaveVerifly(verifly); err != nil {
+	if err := s.repo.SaveVerify(verifly); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +49,13 @@ func (s *userServiceImpl) FindByEmail(email string) (User, error) {
 
 func (s *userServiceImpl) VerificationOTP(verifly Verification) error {
 	if err := s.repo.VerificationOTP(verifly.Email, verifly.Otp); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userServiceImpl) LoginAdmin(admin Admin) error {
+	if err := s.repo.LoginAdmin(admin.Username, admin.Password); err != nil {
 		return err
 	}
 	return nil

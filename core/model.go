@@ -19,3 +19,9 @@ type Verification struct {
 	Otp   string
 	Email string
 }
+
+type Admin struct {
+	gorm.Model
+	Username string
+	Password string
+}
