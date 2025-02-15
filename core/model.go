@@ -5,8 +5,9 @@ import "gorm.io/gorm"
 type User struct {
 	gorm.Model
 	// ID          uint
+	Image 	 	string
 	Username    string
-	Password    string
+	// Password    string
 	Email       string
 	Tel         string
 	Firstname   string

@@ -33,6 +33,8 @@ func (h *HttpUserHandler) RegisterUser(c *fiber.Ctx) error {
 }
 
 func (h *HttpUserHandler) GetUser(c *fiber.Ctx) error {
+	userID := c.Locals("userID") // Get userID from context
+	fmt.Println("User ID from context:", userID)
 	email := c.Params("email")
 	fmt.Println(email)
 	user, err := h.service.FindByEmail(email)
