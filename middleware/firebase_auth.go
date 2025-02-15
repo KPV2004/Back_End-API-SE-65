@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 )
 
@@ -17,8 +19,13 @@ var app *firebase.App
 
 // Initialize Firebase Admin SDK
 func InitFirebase() {
-	// Update the path to the correct location of the credentials file
-	opt := option.WithCredentialsFile("Path/to/your/credentials.json")
+	env_err := godotenv.Load()
+	if env_err != nil {
+		// log.Fatal("Error loading .env file")
+		panic("Error loading .env file")
+	}
+
+	opt := option.WithCredentialsFile(os.Getenv("FIREBASE_CREDENTIALS"))
 	var err error
 	app, err = firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-server/adapters"
 	"go-server/core"
+	"go-server/middleware"
 	"log"
 	"os"
 	"strconv"
@@ -71,7 +72,7 @@ func main() {
 	smtpPass := os.Getenv("MAILER_PASSWORD")
 
 	dialer := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
-
+	middleware.InitFirebase()
 	//Implement Port Hexagonal Arc {Secondary to Primary Port}
 	userRepo := adapters.NewGormUserRepository(db)
 	userService := core.NewUserService(userRepo)
@@ -82,7 +83,7 @@ func main() {
 	userHandler := adapters.NewHttpUserHandler(userService, emailService)
 
 	app.Post("/user/register", userHandler.RegisterUser)
-	app.Get("/user/getuser/:email", userHandler.GetUser)
+	app.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
 	app.Get("/user/genotp/:email", userHandler.GenOTP)
 	app.Post("/user/verifyotp", userHandler.VerifyOTP)
 
