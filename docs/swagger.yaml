@@ -1,0 +1,255 @@
+basePath: /api/v1
+definitions:
+  core.Admin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  core.User:
+    properties:
+      date_of_birth:
+        example: "2000-01-01"
+        type: string
+      email:
+        example: user@example.com
+        type: string
+      firstname:
+        example: John
+        type: string
+      gender:
+        example: none
+        type: string
+      image:
+        example: https://example.com/image.jpg
+        type: string
+      lastname:
+        example: Doe
+        type: string
+      tel:
+        example: 06xxxxxxxx
+        type: string
+      username:
+        example: test_user
+        type: string
+    type: object
+  core.Verification:
+    properties:
+      email:
+        type: string
+      otp:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API documentation สำหรับ Fiber + Swagger
+  title: Fiber API Documentation
+  version: "1.0"
+paths:
+  /api/v1/admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Login an admin into the system
+      parameters:
+      - description: Admin Data
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/core.Admin'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Admin login
+      tags:
+      - Admin
+  /api/v1/admin/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new admin in the system
+      parameters:
+      - description: Admin Data
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/core.Admin'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new admin
+      tags:
+      - Admin
+  /api/v1/user/genotp/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Generate a one-time password (OTP) for the user
+      parameters:
+      - description: User Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Generate OTP
+      tags:
+      - User
+  /api/v1/user/getuser/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve user details by email. This route is protected by Firebase
+        authentication.
+      parameters:
+      - description: User Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.User'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get user by email
+      tags:
+      - User
+  /api/v1/user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user in the system
+      parameters:
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/core.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/core.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user
+      tags:
+      - User
+  /api/v1/user/verifyotp:
+    post:
+      consumes:
+      - application/json
+      description: Verify the one-time password (OTP) for the user
+      parameters:
+      - description: Verification Data
+        in: body
+        name: verification
+        required: true
+        schema:
+          $ref: '#/definitions/core.Verification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Verify OTP
+      tags:
+      - User
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

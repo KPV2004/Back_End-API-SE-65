@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"go-server/adapters"
 	"go-server/core"
+
+	_ "go-server/docs"
 	"go-server/middleware"
 	"log"
 	"os"
@@ -13,12 +15,22 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
+	fiberSwagger "github.com/swaggo/fiber-swagger"
 	"gopkg.in/gomail.v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
+// @title Fiber API Documentation
+// @version 1.0
+// @description API documentation สำหรับ Fiber + Swagger
+// @host localhost:8000
+// @BasePath /api/v1
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 const (
 	host     = "localhost"  // or the Docker service name if running in another container
 	port     = 5432         // default PostgreSQL port
@@ -82,13 +94,17 @@ func main() {
 	// Assuming core.NewEmailService(emailRepo) creates an email service
 	userHandler := adapters.NewHttpUserHandler(userService, emailService)
 
-	app.Post("/user/register", userHandler.RegisterUser)
-	app.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
-	app.Get("/user/genotp/:email", userHandler.GenOTP)
-	app.Post("/user/verifyotp", userHandler.VerifyOTP)
+	// Swagger UI Route
+	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
-	app.Post("/admin/register", userHandler.RegisterAdmin)
-	app.Post("/admin/login", userHandler.LoginAdmin)
+	// API Routes
+	api := app.Group("/api/v1")
+	api.Post("/user/register", userHandler.RegisterUser)
+	api.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
+	api.Get("/user/genotp/:email", userHandler.GenOTP)
+	api.Post("/user/verifyotp", userHandler.VerifyOTP)
+	api.Post("/admin/register", userHandler.RegisterAdmin)
+	api.Post("/admin/login", userHandler.LoginAdmin)
 
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
