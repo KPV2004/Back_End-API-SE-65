@@ -22,7 +22,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// @title Fiber API Documentation
+// @title TiawPao API Documentation
 // @version 1.0
 // @description API documentation สำหรับ Fiber + Swagger
 // @host localhost:8000

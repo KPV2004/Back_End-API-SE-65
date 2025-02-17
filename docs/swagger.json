@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "API documentation สำหรับ Fiber + Swagger",
-        "title": "Fiber API Documentation",
+        "title": "TiawPao API Documentation",
         "contact": {},
         "version": "1.0"
     },

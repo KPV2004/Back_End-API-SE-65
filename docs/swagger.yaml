@@ -45,7 +45,7 @@ host: localhost:8000
 info:
   contact: {}
   description: API documentation สำหรับ Fiber + Swagger
-  title: Fiber API Documentation
+  title: TiawPao API Documentation
   version: "1.0"
 paths:
   /api/v1/admin/login:

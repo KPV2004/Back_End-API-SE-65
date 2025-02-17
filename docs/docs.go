@@ -394,7 +394,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8000",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "Fiber API Documentation",
+	Title:            "TiawPao API Documentation",
 	Description:      "API documentation สำหรับ Fiber + Swagger",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
