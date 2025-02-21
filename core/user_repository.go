@@ -7,4 +7,5 @@ type UserRepository interface {
 	SaveVerify(verify Verification) error
 	GetUserData(email string) (User, error)
 	VerificationOTP(email string, OTP string) error
+	UpdateUser(user User, email string) error
 }

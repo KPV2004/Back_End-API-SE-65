@@ -170,3 +170,29 @@ func (h *HttpUserHandler) LoginAdmin(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Login Sucessfully!"})
 }
+
+// @Summary Update User data
+// @Description Update user data in the system
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param email path string true "User Email"
+// @Param user body core.User true "User Data"
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/user/update/{email} [put]
+func (h *HttpUserHandler) UserUpdate(c *fiber.Ctx) error {
+	var user core.User
+	email := c.Params("email")
+	fmt.Println(email)
+
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+	if err := h.service.UpdateUser(user, email); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update User Sucessfully!"})
+}

@@ -7,6 +7,7 @@ type UserService interface {
 	CreateVerifly(verifly Verification) error // CreateVerifly creates a new verification
 	VerificationOTP(verifly Verification) error
 	LoginAdmin(admin Admin) error
+	UpdateUser(user User, email string) error
 }
 
 type userServiceImpl struct {
@@ -56,6 +57,12 @@ func (s *userServiceImpl) VerificationOTP(verifly Verification) error {
 
 func (s *userServiceImpl) LoginAdmin(admin Admin) error {
 	if err := s.repo.LoginAdmin(admin.Username, admin.Password); err != nil {
+		return err
+	}
+	return nil
+}
+func (s *userServiceImpl) UpdateUser(user User, email string) error {
+	if err := s.repo.UpdateUser(user, email); err != nil {
 		return err
 	}
 	return nil

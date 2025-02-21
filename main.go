@@ -103,6 +103,7 @@ func main() {
 	api.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
 	api.Get("/user/genotp/:email", userHandler.GenOTP)
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
+	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
 

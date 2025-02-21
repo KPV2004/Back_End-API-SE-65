@@ -83,3 +83,9 @@ func (r *GormUserRepository) VerificationOTP(email string, OTP string) error {
 	}
 	return nil
 }
+func (r *GormUserRepository) UpdateUser(user core.User, email string) error {
+	if result := r.db.Model(&user).Where("email = ?", email).Updates(&user); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
