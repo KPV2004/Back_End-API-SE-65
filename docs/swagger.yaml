@@ -211,6 +211,47 @@ paths:
       summary: Create a new user
       tags:
       - User
+  /api/v1/user/update/{email}:
+    put:
+      consumes:
+      - application/json
+      description: Update user data in the system
+      parameters:
+      - description: User Email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/core.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update User data
+      tags:
+      - User
   /api/v1/user/verifyotp:
     post:
       consumes:
