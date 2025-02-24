@@ -14,15 +14,16 @@ type User struct {
 }
 
 type Plan struct {
-	PlanID     string `json:"plan_id" example:"none"`
-	TripName   string `json:"TripName" example:"BangkokTrip"`
-	RegionID   string `json:"region_id" example:"Central Thailand"`
-	ProvinceID string `json:"province_id" example:"Bangkok"`
-	StartDate  string `json:"start_date" example:"2025-01-01"`
-	StartTime  string `json:"start_time" example:"2025-01-01"`
-	EndDate    string `json:"end_date" example:"2025-01-01"`
-	EndTime    string `json:"end_time" example:"2025-01-01"`
-	Visibility bool   `json:"visibility" example:"true"`
+	PlanID      string `json:"plan_id" example:"none"`
+	AuthorEmail string `json:"author_email" example:"user@example.com"`
+	TripName    string `json:"TripName" example:"BangkokTrip"`
+	RegionID    string `json:"region_id" example:"Central Thailand"`
+	ProvinceID  string `json:"province_id" example:"Bangkok"`
+	StartDate   string `json:"start_date" example:"2025-01-01"`
+	StartTime   string `json:"start_time" example:"2025-01-01"`
+	EndDate     string `json:"end_date" example:"2025-01-01"`
+	EndTime     string `json:"end_time" example:"2025-01-01"`
+	Visibility  bool   `json:"visibility" example:"true"`
 }
 
 type Verification struct {
