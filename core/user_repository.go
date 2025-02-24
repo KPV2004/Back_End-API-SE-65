@@ -8,4 +8,5 @@ type UserRepository interface {
 	GetUserData(email string) (User, error)
 	VerificationOTP(email string, OTP string) error
 	UpdateUser(user User, email string) error
+	UpdateUserPlanByEmail(email string, newPlanID string) error
 }
