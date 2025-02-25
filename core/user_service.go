@@ -8,6 +8,7 @@ type UserService interface {
 	VerificationOTP(verifly Verification) error
 	LoginAdmin(admin Admin) error
 	UpdateUser(user User, email string) error
+	UpdateUserPlanByEmail(email string, newPlanID string) error
 }
 
 type userServiceImpl struct {
@@ -63,6 +64,12 @@ func (s *userServiceImpl) LoginAdmin(admin Admin) error {
 }
 func (s *userServiceImpl) UpdateUser(user User, email string) error {
 	if err := s.repo.UpdateUser(user, email); err != nil {
+		return err
+	}
+	return nil
+}
+func (s *userServiceImpl) UpdateUserPlanByEmail(email string, newPlanID string) error {
+	if err := s.repo.UpdateUserPlanByEmail(email, newPlanID); err != nil {
 		return err
 	}
 	return nil
