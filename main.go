@@ -100,13 +100,14 @@ func main() {
 	// API Routes
 	api := app.Group("/api/v1")
 	api.Post("/user/register", userHandler.RegisterUser)
-	api.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
+	api.Get("/user/getuser/:email", userHandler.GetUser)
 	api.Get("/user/genotp/:email", userHandler.GenOTP)
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
 	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
-	api.Put("/user/addtriplocation/:id", userHandler.AddTripLocationHandler)
-	api.Post("/user/createplan", userHandler.CreatePlanTrip)
+	api.Put("/plan/addtriplocation/:id", middleware.AuthMiddleware, userHandler.AddTripLocationHandler)
+	api.Get("/plan/gettriplocation/:id", middleware.AuthMiddleware, userHandler.GetTripLocationHandler)
+	api.Post("/user/createplan", middleware.AuthMiddleware, userHandler.CreatePlanTrip)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
 	// Migrate the schema

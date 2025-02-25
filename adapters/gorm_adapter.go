@@ -138,3 +138,10 @@ func (r *GormUserRepository) AddTripLocation(planID string, newPlaceID string) e
 
 	return nil
 }
+func (r *GormUserRepository) GetTripLocationByPlanID(planID string) ([]string, error) {
+	var plan core.Plan
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return nil, err
+	}
+	return plan.TripLocation, nil
+}

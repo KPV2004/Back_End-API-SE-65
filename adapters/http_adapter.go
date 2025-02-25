@@ -238,3 +238,12 @@ func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Trip location added successfully!"})
 }
+
+func (h *HttpUserHandler) GetTripLocationHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	locations, err := h.service.GetTripLocationByPlanID(planID)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Plan not found", "details": err.Error()})
+	}
+	return c.JSON(fiber.Map{"trip_location": locations})
+}

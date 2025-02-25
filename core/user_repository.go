@@ -11,4 +11,5 @@ type UserRepository interface {
 	UpdateUserPlanByEmail(email string, newPlanID string) error
 	CreatePlan(userPlan Plan) error
 	AddTripLocation(planID string, newPlaceID string) error
+	GetTripLocationByPlanID(planID string) ([]string, error)
 }
