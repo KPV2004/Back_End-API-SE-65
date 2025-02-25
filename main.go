@@ -100,7 +100,7 @@ func main() {
 	// API Routes
 	api := app.Group("/api/v1")
 	api.Post("/user/register", userHandler.RegisterUser)
-	api.Get("/user/getuser/:email", userHandler.GetUser)
+	api.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
 	api.Get("/user/genotp/:email", userHandler.GenOTP)
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
