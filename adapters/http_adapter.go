@@ -208,5 +208,17 @@ func (h *HttpUserHandler) UserUpdatePlanByEmail(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update UserPlan Successfully!"})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update UserPlanID Successfully!"})
+}
+
+func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
+	var planData core.Plan
+	if err := c.BodyParser(&planData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+	if err := h.service.CreatePlan(planData); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Create Plan Successfully!"})
 }

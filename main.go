@@ -105,12 +105,15 @@ func main() {
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
 	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
+	api.Post("/user/createplan", userHandler.CreatePlanTrip)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	db.AutoMigrate(&core.Admin{})
 	db.AutoMigrate(&core.Verification{})
+	db.AutoMigrate(&core.Plan{})
+
 	fmt.Println("Database migration completed!")
 	app.Listen(("0.0.0.0:8000"))
 	// newBook := &Book{Name: "Think Again", Author: "adam", Description: "test", price: 200}

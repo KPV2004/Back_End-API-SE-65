@@ -113,3 +113,10 @@ func (r *GormUserRepository) UpdateUserPlanByEmail(email string, newPlanID strin
 
 	return nil
 }
+
+func (r *GormUserRepository) CreatePlan(userPlan core.Plan) error {
+	if result := r.db.Create(&userPlan); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

@@ -5,6 +5,7 @@ type UserService interface {
 	CreateAdmin(admin Admin) error            // CreateAdmin creates a new admin
 	FindByEmail(email string) (User, error)   // FindByEmail returns a user by username
 	CreateVerifly(verifly Verification) error // CreateVerifly creates a new verification
+	CreatePlan(planData Plan) error           // CreatePlan creates a new plan
 	VerificationOTP(verifly Verification) error
 	LoginAdmin(admin Admin) error
 	UpdateUser(user User, email string) error
@@ -28,6 +29,13 @@ func (s *userServiceImpl) CreateUser(user User) error {
 
 func (s *userServiceImpl) CreateAdmin(admin Admin) error {
 	if err := s.repo.SaveAdmin(admin); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userServiceImpl) CreatePlan(planData Plan) error {
+	if err := s.repo.CreatePlan(planData); err != nil {
 		return err
 	}
 	return nil

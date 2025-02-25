@@ -9,4 +9,5 @@ type UserRepository interface {
 	VerificationOTP(email string, OTP string) error
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
+	CreatePlan(userPlan Plan) error
 }
