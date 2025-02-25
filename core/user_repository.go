@@ -10,4 +10,5 @@ type UserRepository interface {
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
 	CreatePlan(userPlan Plan) error
+	AddTripLocation(planID string, newPlaceID string) error
 }

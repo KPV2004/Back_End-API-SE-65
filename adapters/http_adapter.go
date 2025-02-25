@@ -222,3 +222,19 @@ func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Create Plan Successfully!"})
 }
+
+func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	var body struct {
+		NewPlaceID string `json:"new_place_id"`
+	}
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request", "details": err.Error()})
+	}
+
+	if err := h.service.AddTripLocation(planID, body.NewPlaceID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error", "details": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Trip location added successfully!"})
+}

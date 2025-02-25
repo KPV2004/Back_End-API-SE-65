@@ -5,11 +5,12 @@ type UserService interface {
 	CreateAdmin(admin Admin) error            // CreateAdmin creates a new admin
 	FindByEmail(email string) (User, error)   // FindByEmail returns a user by username
 	CreateVerifly(verifly Verification) error // CreateVerifly creates a new verification
-	CreatePlan(planData Plan) error           // CreatePlan creates a new plan
 	VerificationOTP(verifly Verification) error
 	LoginAdmin(admin Admin) error
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
+	CreatePlan(planData Plan) error // CreatePlan creates a new plan
+	AddTripLocation(planID string, newPlaceID string) error
 }
 
 type userServiceImpl struct {
@@ -78,6 +79,12 @@ func (s *userServiceImpl) UpdateUser(user User, email string) error {
 }
 func (s *userServiceImpl) UpdateUserPlanByEmail(email string, newPlanID string) error {
 	if err := s.repo.UpdateUserPlanByEmail(email, newPlanID); err != nil {
+		return err
+	}
+	return nil
+}
+func (s *userServiceImpl) AddTripLocation(planID string, newPlaceID string) error {
+	if err := s.repo.AddTripLocation(planID, newPlaceID); err != nil {
 		return err
 	}
 	return nil
