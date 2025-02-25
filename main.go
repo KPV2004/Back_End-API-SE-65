@@ -104,9 +104,9 @@ func main() {
 	api.Get("/user/genotp/:email", userHandler.GenOTP)
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
+	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
-
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	db.AutoMigrate(&core.Admin{})

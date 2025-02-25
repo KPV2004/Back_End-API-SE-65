@@ -89,3 +89,27 @@ func (r *GormUserRepository) UpdateUser(user core.User, email string) error {
 	}
 	return nil
 }
+
+func (r *GormUserRepository) UpdateUserPlanByEmail(email string, newPlanID string) error {
+	var user core.User
+	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
+		return err
+	}
+	for _, plan := range user.UserPlanID {
+		if plan == newPlanID {
+			// หากมีอยู่แล้ว ไม่ต้องอัปเดต
+			return nil
+		}
+	}
+	// เพิ่ม newPlanID เข้าไปใน slice ของ UserPlanID
+	user.UserPlanID = append(user.UserPlanID, newPlanID)
+
+	// อัปเดต field user_plan_id โดยระบุเงื่อนไขด้วย email แทนการใช้ Save()
+	if err := r.db.Model(&core.User{}).
+		Where("email = ?", email).
+		Update("user_plan_id", user.UserPlanID).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

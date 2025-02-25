@@ -196,3 +196,17 @@ func (h *HttpUserHandler) UserUpdate(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update User Sucessfully!"})
 }
+
+func (h *HttpUserHandler) UserUpdatePlanByEmail(c *fiber.Ctx) error {
+	email := c.Params("email")
+	newPlanID := c.FormValue("userplan_id")
+	if newPlanID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+
+	if err := h.service.UpdateUserPlanByEmail(email, newPlanID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update UserPlan Successfully!"})
+}
