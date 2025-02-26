@@ -113,3 +113,35 @@ func (r *GormUserRepository) UpdateUserPlanByEmail(email string, newPlanID strin
 
 	return nil
 }
+
+func (r *GormUserRepository) CreatePlan(userPlan core.Plan) error {
+	if result := r.db.Create(&userPlan); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (r *GormUserRepository) AddTripLocation(planID string, newPlaceID string) error {
+	var plan core.Plan
+	// ดึงข้อมูลแผนจากฐานข้อมูลตาม planID
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return err
+	}
+
+	// เพิ่ม newPlaceID เข้าไปใน trip_location
+	plan.TripLocation = append(plan.TripLocation, newPlaceID)
+
+	// ใช้ Updates() ด้วย struct เพื่อให้ GORM เรียกใช้ serializer ของ TripLocation
+	if err := r.db.Model(&plan).Updates(core.Plan{TripLocation: plan.TripLocation}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+func (r *GormUserRepository) GetTripLocationByPlanID(planID string) ([]string, error) {
+	var plan core.Plan
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return nil, err
+	}
+	return plan.TripLocation, nil
+}

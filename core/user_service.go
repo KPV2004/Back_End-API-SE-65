@@ -9,6 +9,9 @@ type UserService interface {
 	LoginAdmin(admin Admin) error
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
+	CreatePlan(planData Plan) error // CreatePlan creates a new plan
+	AddTripLocation(planID string, newPlaceID string) error
+	GetTripLocationByPlanID(planID string) ([]string, error)
 }
 
 type userServiceImpl struct {
@@ -28,6 +31,13 @@ func (s *userServiceImpl) CreateUser(user User) error {
 
 func (s *userServiceImpl) CreateAdmin(admin Admin) error {
 	if err := s.repo.SaveAdmin(admin); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userServiceImpl) CreatePlan(planData Plan) error {
+	if err := s.repo.CreatePlan(planData); err != nil {
 		return err
 	}
 	return nil
@@ -73,4 +83,17 @@ func (s *userServiceImpl) UpdateUserPlanByEmail(email string, newPlanID string) 
 		return err
 	}
 	return nil
+}
+func (s *userServiceImpl) AddTripLocation(planID string, newPlaceID string) error {
+	if err := s.repo.AddTripLocation(planID, newPlaceID); err != nil {
+		return err
+	}
+	return nil
+}
+func (s *userServiceImpl) GetTripLocationByPlanID(planID string) ([]string, error) {
+	locations, err := s.repo.GetTripLocationByPlanID(planID)
+	if err != nil {
+		return nil, err
+	}
+	return locations, nil
 }

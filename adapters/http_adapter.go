@@ -208,5 +208,42 @@ func (h *HttpUserHandler) UserUpdatePlanByEmail(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update UserPlan Successfully!"})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update UserPlanID Successfully!"})
+}
+
+func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
+	var planData core.Plan
+	if err := c.BodyParser(&planData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
+	}
+	if err := h.service.CreatePlan(planData); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Create Plan Successfully!"})
+}
+
+func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	var body struct {
+		NewPlaceID string `json:"new_place_id"`
+	}
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request", "details": err.Error()})
+	}
+
+	if err := h.service.AddTripLocation(planID, body.NewPlaceID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error", "details": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Trip location added successfully!"})
+}
+
+func (h *HttpUserHandler) GetTripLocationHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	locations, err := h.service.GetTripLocationByPlanID(planID)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Plan not found", "details": err.Error()})
+	}
+	return c.JSON(fiber.Map{"trip_location": locations})
 }
