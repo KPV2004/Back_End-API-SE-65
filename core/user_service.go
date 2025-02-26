@@ -12,6 +12,7 @@ type UserService interface {
 	CreatePlan(planData Plan) error // CreatePlan creates a new plan
 	AddTripLocation(planID string, newPlaceID string) error
 	GetTripLocationByPlanID(planID string) ([]string, error)
+	GetPlanByID(planID string) (Plan, error)
 }
 
 type userServiceImpl struct {
@@ -96,4 +97,11 @@ func (s *userServiceImpl) GetTripLocationByPlanID(planID string) ([]string, erro
 		return nil, err
 	}
 	return locations, nil
+}
+func (s *userServiceImpl) GetPlanByID(planID string) (Plan, error) {
+	plan, err := s.repo.GetPlanByID(planID)
+	if err != nil {
+		return plan, err
+	}
+	return plan, nil
 }

@@ -12,4 +12,5 @@ type UserRepository interface {
 	CreatePlan(userPlan Plan) error
 	AddTripLocation(planID string, newPlaceID string) error
 	GetTripLocationByPlanID(planID string) ([]string, error)
+	GetPlanByID(planID string) (Plan, error)
 }

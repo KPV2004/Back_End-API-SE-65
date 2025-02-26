@@ -145,3 +145,11 @@ func (r *GormUserRepository) GetTripLocationByPlanID(planID string) ([]string, e
 	}
 	return plan.TripLocation, nil
 }
+
+func (r *GormUserRepository) GetPlanByID(planID string) (core.Plan, error) {
+	var plan core.Plan
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return plan, err
+	}
+	return plan, nil
+}

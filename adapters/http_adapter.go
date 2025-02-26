@@ -247,3 +247,16 @@ func (h *HttpUserHandler) GetTripLocationHandler(c *fiber.Ctx) error {
 	}
 	return c.JSON(fiber.Map{"trip_location": locations})
 }
+func (h *HttpUserHandler) GetPlanByIDHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	if planID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "plan_id is required"})
+	}
+
+	plan, err := h.service.GetPlanByID(planID)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Plan not found", "details": err.Error()})
+	}
+
+	return c.JSON(fiber.Map{"plan_data": plan})
+}
