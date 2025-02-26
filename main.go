@@ -107,7 +107,7 @@ func main() {
 	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
 	api.Put("/plan/addtriplocation/:id", middleware.AuthMiddleware, userHandler.AddTripLocationHandler)
 	api.Get("/plan/gettriplocation/:id", middleware.AuthMiddleware, userHandler.GetTripLocationHandler)
-	api.Get("/plan/getplanbyid/:id", userHandler.GetPlanByIDHandler)
+	api.Get("/plan/getplanbyid/:id", middleware.AuthMiddleware, userHandler.GetPlanByIDHandler)
 	api.Post("/user/createplan", middleware.AuthMiddleware, userHandler.CreatePlanTrip)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
