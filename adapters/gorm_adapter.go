@@ -153,3 +153,21 @@ func (r *GormUserRepository) GetPlanByID(planID string) (core.Plan, error) {
 	}
 	return plan, nil
 }
+func (r *GormUserRepository) DeletePlanByID(planID string) error {
+	// Delete the plan record from the "plans" table
+	if err := r.db.Delete(&core.Plan{}, "plan_id = ?", planID).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *GormUserRepository) DeleteUserPlanByEmail(email, planID string) error {
+	err := r.db.Exec(
+		"UPDATE users SET user_plan_id = array_remove(user_plan_id, ?) WHERE email = ?",
+		planID, email,
+	).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

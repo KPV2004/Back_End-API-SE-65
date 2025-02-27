@@ -260,3 +260,32 @@ func (h *HttpUserHandler) GetPlanByIDHandler(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"plan_data": plan})
 }
+
+func (h *HttpUserHandler) DeletePlanByIDHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	if planID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "plan_id is required"})
+	}
+
+	if err := h.service.DeletePlanByID(planID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to delete plan", "details": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Plan deleted successfully"})
+}
+func (h *HttpUserHandler) DeleteUserPlanByEmailHandler(c *fiber.Ctx) error {
+	email := c.Params("email")
+	if email == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "email is required"})
+	}
+	planID := c.FormValue("plan_id")
+	if planID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "plan_id is required"})
+	}
+
+	if err := h.service.DeleteUserPlanByEmail(email, planID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to update user plan", "details": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Delete plan updated successfully"})
+}
