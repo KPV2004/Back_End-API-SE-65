@@ -20,6 +20,7 @@ type User struct {
 type Plan struct {
 	PlanID        string   `gorm:"primaryKey" json:"plan_id" example:"4e63bbd1-1f39-41cd-a832-a18496ac4f11"`
 	AuthorEmail   string   `json:"author_email" example:"user@example.com"`
+	AuthorImg     string   `json:"author_img" example:"https://example.com/image.jpg"`
 	TripName      string   `json:"trip_name" example:"BangkokTrip"`
 	RegionLabel   string   `json:"region_label" example:"Central Thailand"`
 	ProvinceLabel string   `json:"province_label" example:"Bangkok"`
