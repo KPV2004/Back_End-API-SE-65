@@ -278,12 +278,20 @@ func (h *HttpUserHandler) DeleteUserPlanByEmailHandler(c *fiber.Ctx) error {
 	if email == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "email is required"})
 	}
-	planID := c.FormValue("plan_id")
-	if planID == "" {
+
+	type DeleteRequest struct {
+		PlanID string `json:"plan_id"`
+	}
+	var req DeleteRequest
+	// ใช้ BodyParser เพื่อแปลง JSON body เป็น struct
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
+	}
+	if req.PlanID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "plan_id is required"})
 	}
 
-	if err := h.service.DeleteUserPlanByEmail(email, planID); err != nil {
+	if err := h.service.DeleteUserPlanByEmail(email, req.PlanID); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to update user plan", "details": err.Error()})
 	}
 
