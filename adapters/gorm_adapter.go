@@ -171,3 +171,10 @@ func (r *GormUserRepository) DeleteUserPlanByEmail(email, planID string) error {
 	}
 	return nil
 }
+func (r *GormUserRepository) GetVisiblePlans() ([]core.Plan, error) {
+	var plans []core.Plan
+	if err := r.db.Where("visibility = ?", true).Find(&plans).Error; err != nil {
+		return nil, err
+	}
+	return plans, nil
+}

@@ -15,4 +15,5 @@ type UserRepository interface {
 	GetPlanByID(planID string) (Plan, error)
 	DeletePlanByID(planID string) error
 	DeleteUserPlanByEmail(email, planID string) error
+	GetVisiblePlans() ([]Plan, error)
 }

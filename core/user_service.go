@@ -15,6 +15,7 @@ type UserService interface {
 	GetPlanByID(planID string) (Plan, error)
 	DeletePlanByID(planID string) error
 	DeleteUserPlanByEmail(email, planID string) error
+	GetVisiblePlans() ([]Plan, error)
 }
 
 type userServiceImpl struct {
@@ -118,4 +119,11 @@ func (s *userServiceImpl) DeleteUserPlanByEmail(email, planID string) error {
 		return err
 	}
 	return nil
+}
+func (s *userServiceImpl) GetVisiblePlans() ([]Plan, error) {
+	plans, err := s.repo.GetVisiblePlans()
+	if err != nil {
+		return nil, err
+	}
+	return plans, nil
 }
