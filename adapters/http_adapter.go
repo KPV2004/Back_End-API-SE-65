@@ -297,3 +297,13 @@ func (h *HttpUserHandler) DeleteUserPlanByEmailHandler(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Delete plan updated successfully"})
 }
+func (h *HttpUserHandler) GetVisiblePlansHandler(c *fiber.Ctx) error {
+	plans, err := h.service.GetVisiblePlans()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve visible plans",
+			"details": err.Error(),
+		})
+	}
+	return c.JSON(plans)
+}
