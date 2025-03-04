@@ -121,28 +121,42 @@ func (r *GormUserRepository) CreatePlan(userPlan core.Plan) error {
 	return nil
 }
 
-func (r *GormUserRepository) AddTripLocation(planID string, newPlaceID string) error {
+func (r *GormUserRepository) AddTripLocation(planID string, newPlaceID string, index int) error {
 	var plan core.Plan
 	// ดึงข้อมูลแผนจากฐานข้อมูลตาม planID
 	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
 		return err
 	}
 
-	// เพิ่ม newPlaceID เข้าไปใน trip_location
-	plan.TripLocation = append(plan.TripLocation, newPlaceID)
+	// ตรวจสอบว่า TripLocation เป็น nil หรือไม่ ถ้าเป็น nil ให้ตั้งค่าเป็น array ว่าง ๆ
+	if plan.TripLocation == nil {
+		plan.TripLocation = [][]string{}
+	}
 
-	// ใช้ Updates() ด้วย struct เพื่อให้ GORM เรียกใช้ serializer ของ TripLocation
-	if err := r.db.Model(&plan).Updates(core.Plan{TripLocation: plan.TripLocation}).Error; err != nil {
+	// ตรวจสอบว่า index อยู่ในขอบเขตของ TripLocation หรือไม่
+	if index >= len(plan.TripLocation) {
+		// ถ้าไม่อยู่ในขอบเขต ให้เพิ่ม index ใหม่ใน TripLocation
+		plan.TripLocation = append(plan.TripLocation, []string{})
+	}
+
+	// เพิ่ม newPlaceID ลงในตำแหน่งที่ต้องการ (ตาม index)
+	plan.TripLocation[index] = append(plan.TripLocation[index], newPlaceID)
+
+	// ใช้ Save แทน Updates() เพื่อให้ GORM อัปเดตข้อมูลใน TripLocation ได้ถูกต้อง
+	if err := r.db.Save(&plan).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
-func (r *GormUserRepository) GetTripLocationByPlanID(planID string) ([]string, error) {
+
+func (r *GormUserRepository) GetTripLocationByPlanID(planID string) ([][]string, error) {
 	var plan core.Plan
+	// ดึงข้อมูลแผนจากฐานข้อมูลตาม planID
 	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
 		return nil, err
 	}
+	// คืนค่าข้อมูล TripLocation ที่เป็น 2D array
 	return plan.TripLocation, nil
 }
 
