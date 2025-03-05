@@ -93,8 +93,8 @@ func main() {
 	emailService := core.NewEmailService(emailRepo)
 	// Assuming core.NewEmailService(emailRepo) creates an email service
 	userHandler := adapters.NewHttpUserHandler(userService, emailService)
-
 	// Swagger UI Route
+  app.Static("/access/images", "./access/images")
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	// API Routes
@@ -105,6 +105,7 @@ func main() {
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Post("/user/createplan", middleware.AuthMiddleware, userHandler.CreatePlanTrip)
 	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
+  api.Post("/user/uploadImage", userHandler.UploadImage)
 	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
 	api.Delete("/user/deleteuserplanbyemail/:email", middleware.AuthMiddleware, userHandler.DeleteUserPlanByEmailHandler)
 	api.Get("/plan/gettriplocation/:id", userHandler.GetTripLocationHandler)

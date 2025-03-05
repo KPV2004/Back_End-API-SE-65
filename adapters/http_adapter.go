@@ -6,7 +6,10 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
-
+  "os"
+	"encoding/hex"
+	"log"
+	"path/filepath"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -17,6 +20,16 @@ type HttpUserHandler struct {
 
 func NewHttpUserHandler(service core.UserService, service_email core.EmailService) *HttpUserHandler {
 	return &HttpUserHandler{service: service, service_email: service_email}
+}
+
+// generateRandomFilename creates a random filename with the same extension
+func generateRandomFilename(ext string) string {
+	bytes := make([]byte, 8) // 8 bytes = 16 characters hex
+	_, err := rand.Read(bytes)
+	if err != nil {
+		log.Fatal("Failed to generate random filename")
+	}
+	return hex.EncodeToString(bytes) + ext
 }
 
 // @Summary Create a new user
@@ -195,6 +208,45 @@ func (h *HttpUserHandler) UserUpdate(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update User Sucessfully!"})
+}
+
+func (h *HttpUserHandler) UploadImage(c *fiber.Ctx) error {
+	imageDir := "./access/images"
+
+	// Ensure the directory exists
+	if err := os.MkdirAll(imageDir, os.ModePerm); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to create image directory",
+		})
+	}
+
+	// Get file from request
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Failed to get image",
+		})
+	}
+
+	// Generate a random filename
+	randomName := generateRandomFilename(filepath.Ext(file.Filename))
+
+	// Full path to save file
+	savePath := filepath.Join(imageDir, randomName)
+	if err := c.SaveFile(file, savePath); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to save image",
+		})
+	}
+
+	// Image URL
+	imageURL := fmt.Sprintf("/access/images/%s", randomName)
+
+	// Return success response
+	return c.JSON(fiber.Map{
+		"message": "Image uploaded successfully",
+		"path":    imageURL,
+	})
 }
 
 // @Summary Update User Plan
