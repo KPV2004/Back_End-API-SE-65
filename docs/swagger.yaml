@@ -7,32 +7,53 @@ definitions:
       username:
         type: string
     type: object
-  core.User:
+  core.Plan:
     properties:
-      date_of_birth:
-        example: "2000-01-01"
-        type: string
-      email:
+      author_email:
         example: user@example.com
         type: string
-      firstname:
-        example: John
-        type: string
-      gender:
-        example: none
-        type: string
-      image:
+      author_img:
         example: https://example.com/image.jpg
         type: string
-      lastname:
-        example: Doe
+      end_date:
+        example: "2025-01-01"
         type: string
-      tel:
-        example: 06xxxxxxxx
+      end_time:
+        example: 16:53:44.581Z
         type: string
-      username:
-        example: test_user
+      plan_id:
+        example: 4e63bbd1-1f39-41cd-a832-a18496ac4f11
         type: string
+      province_id:
+        example: "123"
+        type: string
+      province_label:
+        example: Bangkok
+        type: string
+      region_label:
+        example: Central Thailand
+        type: string
+      start_date:
+        example: "2025-01-01"
+        type: string
+      start_time:
+        example: 16:53:44.581Z
+        type: string
+      trip_location:
+        example:
+        - '["place_id"'
+        - ' "place_id"]'
+        items:
+          type: string
+        type: array
+      trip_name:
+        example: BangkokTrip
+        type: string
+      visibility:
+        example: true
+        type: boolean
+    type: object
+  core.User:
     type: object
   core.Verification:
     properties:
@@ -120,6 +141,83 @@ paths:
       summary: Register a new admin
       tags:
       - Admin
+  /api/v1/plan/addtriplocation/{id}:
+    put:
+      consumes:
+      - application/json
+      description: AddTripLocation
+      parameters:
+      - description: Plan Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Place Id
+        in: body
+        name: plan
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: AddTripLocation
+      tags:
+      - User
+  /api/v1/user/createplan:
+    post:
+      consumes:
+      - application/json
+      description: Create Plan
+      parameters:
+      - description: Plan Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/core.Plan'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create Plan
+      tags:
+      - Plan
   /api/v1/user/genotp/{email}:
     get:
       consumes:
@@ -250,6 +348,41 @@ paths:
               type: string
             type: object
       summary: Update User data
+      tags:
+      - User
+  /api/v1/user/updateuserplan/{email}:
+    put:
+      consumes:
+      - application/json
+      description: Update User Plan by Email
+      parameters:
+      - description: User Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update User Plan
       tags:
       - User
   /api/v1/user/verifyotp:
