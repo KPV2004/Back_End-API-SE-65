@@ -258,12 +258,13 @@ func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
 	planID := c.Params("id")
 	var body struct {
 		NewPlaceID string `json:"new_place_id"`
+		Index      int    `json:"index"` // เพิ่ม index (วัน) ใน request body
 	}
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request", "details": err.Error()})
 	}
 
-	if err := h.service.AddTripLocation(planID, body.NewPlaceID); err != nil {
+	if err := h.service.AddTripLocation(planID, body.NewPlaceID, body.Index); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error", "details": err.Error()})
 	}
 
@@ -276,8 +277,11 @@ func (h *HttpUserHandler) GetTripLocationHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Plan not found", "details": err.Error()})
 	}
+
+	// ส่งข้อมูล TripLocation ในรูปแบบ 2D array กลับ
 	return c.JSON(fiber.Map{"trip_location": locations})
 }
+
 func (h *HttpUserHandler) GetPlanByIDHandler(c *fiber.Ctx) error {
 	planID := c.Params("id")
 	if planID == "" {
@@ -327,4 +331,14 @@ func (h *HttpUserHandler) DeleteUserPlanByEmailHandler(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Delete plan updated successfully"})
+}
+func (h *HttpUserHandler) GetVisiblePlansHandler(c *fiber.Ctx) error {
+	plans, err := h.service.GetVisiblePlans()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve visible plans",
+			"details": err.Error(),
+		})
+	}
+	return c.JSON(plans)
 }

@@ -107,10 +107,11 @@ func main() {
 	api.Put("/user/update/:email", middleware.AuthMiddleware, userHandler.UserUpdate)
 	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
 	api.Delete("/user/deleteuserplanbyemail/:email", middleware.AuthMiddleware, userHandler.DeleteUserPlanByEmailHandler)
-	api.Get("/plan/gettriplocation/:id", middleware.AuthMiddleware, userHandler.GetTripLocationHandler)
+	api.Get("/plan/gettriplocation/:id", userHandler.GetTripLocationHandler)
 	api.Get("/plan/getplanbyid/:id", middleware.AuthMiddleware, userHandler.GetPlanByIDHandler)
+	api.Get("/plan/getpublicplan", userHandler.GetVisiblePlansHandler)
 	api.Delete("/plan/deleteplanbyid/:id", middleware.AuthMiddleware, userHandler.DeletePlanByIDHandler)
-	api.Put("/plan/addtriplocation/:id", middleware.AuthMiddleware, userHandler.AddTripLocationHandler)
+	api.Put("/plan/addtriplocation/:id", userHandler.AddTripLocationHandler)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
 	// Migrate the schema
