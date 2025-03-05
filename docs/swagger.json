@@ -119,6 +119,123 @@
                 }
             }
         },
+        "/api/v1/plan/addtriplocation/{id}": {
+            "put": {
+                "description": "AddTripLocation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "AddTripLocation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Plan Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Place Id",
+                        "name": "plan",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/createplan": {
+            "post": {
+                "description": "Create Plan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Plan"
+                ],
+                "summary": "Create Plan",
+                "parameters": [
+                    {
+                        "description": "Plan Data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/core.Plan"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/user/genotp/{email}": {
             "get": {
                 "description": "Generate a one-time password (OTP) for the user",
@@ -318,6 +435,59 @@
                 }
             }
         },
+        "/api/v1/user/updateuserplan/{email}": {
+            "put": {
+                "description": "Update User Plan by Email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update User Plan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User Email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/user/verifyotp": {
             "post": {
                 "description": "Verify the one-time password (OTP) for the user",
@@ -386,42 +556,71 @@
                 }
             }
         },
-        "core.User": {
+        "core.Plan": {
             "type": "object",
             "properties": {
-                "date_of_birth": {
-                    "type": "string",
-                    "example": "2000-01-01"
-                },
-                "email": {
+                "author_email": {
                     "type": "string",
                     "example": "user@example.com"
                 },
-                "firstname": {
-                    "type": "string",
-                    "example": "John"
-                },
-                "gender": {
-                    "type": "string",
-                    "example": "none"
-                },
-                "image": {
+                "author_img": {
                     "type": "string",
                     "example": "https://example.com/image.jpg"
                 },
-                "lastname": {
+                "end_date": {
                     "type": "string",
-                    "example": "Doe"
+                    "example": "2025-01-01"
                 },
-                "tel": {
+                "end_time": {
                     "type": "string",
-                    "example": "06xxxxxxxx"
+                    "example": "16:53:44.581Z"
                 },
-                "username": {
+                "plan_id": {
                     "type": "string",
-                    "example": "test_user"
+                    "example": "4e63bbd1-1f39-41cd-a832-a18496ac4f11"
+                },
+                "province_id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "province_label": {
+                    "type": "string",
+                    "example": "Bangkok"
+                },
+                "region_label": {
+                    "type": "string",
+                    "example": "Central Thailand"
+                },
+                "start_date": {
+                    "type": "string",
+                    "example": "2025-01-01"
+                },
+                "start_time": {
+                    "type": "string",
+                    "example": "16:53:44.581Z"
+                },
+                "trip_location": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"place_id\"",
+                        " \"place_id\"]"
+                    ]
+                },
+                "trip_name": {
+                    "type": "string",
+                    "example": "BangkokTrip"
+                },
+                "visibility": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
+        },
+        "core.User": {
+            "type": "object"
         },
         "core.Verification": {
             "type": "object",

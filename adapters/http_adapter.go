@@ -197,6 +197,16 @@ func (h *HttpUserHandler) UserUpdate(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update User Sucessfully!"})
 }
 
+// @Summary Update User Plan
+// @Description Update User Plan by Email
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param email path string true "User Email"
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/user/updateuserplan/{email} [put]
 func (h *HttpUserHandler) UserUpdatePlanByEmail(c *fiber.Ctx) error {
 	email := c.Params("email")
 	newPlanID := c.FormValue("userplan_id")
@@ -211,6 +221,16 @@ func (h *HttpUserHandler) UserUpdatePlanByEmail(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Update UserPlanID Successfully!"})
 }
 
+// @Summary Create Plan
+// @Description Create Plan
+// @Tags Plan
+// @Accept json
+// @Produce json
+// @Param user body core.Plan true "Plan Data"
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/user/createplan [post]
 func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
 	var planData core.Plan
 	if err := c.BodyParser(&planData); err != nil {
@@ -223,6 +243,17 @@ func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Create Plan Successfully!"})
 }
 
+// @Summary AddTripLocation
+// @Description AddTripLocation
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id path string true "Plan Id"
+// @Param plan body string true "Place Id"
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/plan/addtriplocation/{id} [put]
 func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
 	planID := c.Params("id")
 	var body struct {
