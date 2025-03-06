@@ -18,9 +18,15 @@ type User struct {
 }
 
 type TripLocation struct {
-	PlaceID      string `json:"place_id" example:"place_id_1"`
-	TimeLocation string `json:"time_location" example:"08:00AM"`
-	Day          string `json:"day" example:"Monday"`
+	PlaceID        string `json:"place_id" example:"place_id_1"`
+	PlaceLabel     string `json:"place_label" example:"Place1"`
+	CategorieLabel string `json:"categorie_label" example:"Shopping"`
+	Introduction   string `json:"introduction" example:"intro to Place1"`
+	ThumbnailURL   string `json:"thumbnail_url" example:"https://example.com/image.jpg"`
+	Latitude       string `json:"latitude" example:"11.111"`
+	Longtitude     string `json:"longtitude" example:"11.111"`
+	TimeLocation   string `json:"time_location" example:"08:00AM"`
+	Day            string `json:"day" example:"1"`
 }
 
 type Plan struct {
