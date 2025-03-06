@@ -557,65 +557,22 @@
             }
         },
         "core.Plan": {
+            "type": "object"
+        },
+        "core.TripLocation": {
             "type": "object",
             "properties": {
-                "author_email": {
+                "day": {
                     "type": "string",
-                    "example": "user@example.com"
+                    "example": "Monday"
                 },
-                "author_img": {
+                "place_id": {
                     "type": "string",
-                    "example": "https://example.com/image.jpg"
+                    "example": "place_id_1"
                 },
-                "end_date": {
+                "time_location": {
                     "type": "string",
-                    "example": "2025-01-01"
-                },
-                "end_time": {
-                    "type": "string",
-                    "example": "16:53:44.581Z"
-                },
-                "plan_id": {
-                    "type": "string",
-                    "example": "4e63bbd1-1f39-41cd-a832-a18496ac4f11"
-                },
-                "province_id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "province_label": {
-                    "type": "string",
-                    "example": "Bangkok"
-                },
-                "region_label": {
-                    "type": "string",
-                    "example": "Central Thailand"
-                },
-                "start_date": {
-                    "type": "string",
-                    "example": "2025-01-01"
-                },
-                "start_time": {
-                    "type": "string",
-                    "example": "16:53:44.581Z"
-                },
-                "trip_location": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "[\"place_id\"",
-                        " \"place_id\"]"
-                    ]
-                },
-                "trip_name": {
-                    "type": "string",
-                    "example": "BangkokTrip"
-                },
-                "visibility": {
-                    "type": "boolean",
-                    "example": true
+                    "example": "08:00AM"
                 }
             }
         },

@@ -397,3 +397,17 @@ func (h *HttpUserHandler) GetVisiblePlansHandler(c *fiber.Ctx) error {
 	}
 	return c.JSON(plans)
 }
+
+func (h *HttpUserHandler) UpdatePlanByID(c *fiber.Ctx) error {
+  planID := c.Params("id")
+	var planData core.Plan
+
+  if err := c.BodyParser(&planData); err != nil {
+    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
+  }
+  if error := h.service.UpdatePlan(planData, planID); error != nil {
+    return error
+  }
+  return c.JSON(fiber.Map{"message":"Update Plan is Sucessfully"})
+
+}

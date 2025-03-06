@@ -8,50 +8,18 @@ definitions:
         type: string
     type: object
   core.Plan:
+    type: object
+  core.TripLocation:
     properties:
-      author_email:
-        example: user@example.com
+      day:
+        example: Monday
         type: string
-      author_img:
-        example: https://example.com/image.jpg
+      place_id:
+        example: place_id_1
         type: string
-      end_date:
-        example: "2025-01-01"
+      time_location:
+        example: 08:00AM
         type: string
-      end_time:
-        example: 16:53:44.581Z
-        type: string
-      plan_id:
-        example: 4e63bbd1-1f39-41cd-a832-a18496ac4f11
-        type: string
-      province_id:
-        example: "123"
-        type: string
-      province_label:
-        example: Bangkok
-        type: string
-      region_label:
-        example: Central Thailand
-        type: string
-      start_date:
-        example: "2025-01-01"
-        type: string
-      start_time:
-        example: 16:53:44.581Z
-        type: string
-      trip_location:
-        example:
-        - '["place_id"'
-        - ' "place_id"]'
-        items:
-          type: string
-        type: array
-      trip_name:
-        example: BangkokTrip
-        type: string
-      visibility:
-        example: true
-        type: boolean
     type: object
   core.User:
     type: object

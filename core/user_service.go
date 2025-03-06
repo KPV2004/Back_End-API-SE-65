@@ -10,6 +10,7 @@ type UserService interface {
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
 	CreatePlan(planData Plan) error // CreatePlan creates a new plan
+  UpdatePlan(planData Plan, planID string) error
 	AddTripLocation(planID, newPlaceID, timeLocation, day string, index int) error
 	GetTripLocationByPlanID(planID string) ([]TripLocation, error)
 	GetPlanByID(planID string) (Plan, error)
@@ -81,6 +82,12 @@ func (s *userServiceImpl) UpdateUser(user User, email string) error {
 		return err
 	}
 	return nil
+}
+func (s *userServiceImpl) UpdatePlan(planData Plan, planID string) error{
+  if err:= s.repo.UpdatePlane(planData, planID); err != nil {
+    return err
+  }
+  return nil
 }
 func (s *userServiceImpl) UpdateUserPlanByEmail(email string, newPlanID string) error {
 	if err := s.repo.UpdateUserPlanByEmail(email, newPlanID); err != nil {

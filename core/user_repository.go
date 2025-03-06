@@ -9,6 +9,7 @@ type UserRepository interface {
 	VerificationOTP(email string, OTP string) error
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
+  UpdatePlane(plan Plan, planID string) error
 	CreatePlan(userPlan Plan) error
 	AddTripLocation(planID, newPlaceID, timeLocation, day string, index int) error
 	GetTripLocationByPlanID(planID string) ([]TripLocation, error)
