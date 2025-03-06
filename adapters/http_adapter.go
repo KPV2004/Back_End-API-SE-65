@@ -310,16 +310,23 @@ func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
 func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
 	planID := c.Params("id")
 	var body struct {
-		NewPlaceID   string `json:"new_place_id"`
-		TimeLocation string `json:"time_location"`
-		Day          string `json:"day"`
-		Index        int    `json:"index"` // index at which to update (or append if out-of-range)
+		PlaceID        string `json:"place_id"`
+		PlaceLabel     string `json:"place_label"`
+		CategorieLabel string `json:"categorie_label"`
+		Introduction   string `json:"introduction"`
+		ThumbnailURL   string `json:"thumbnail_url"`
+		Latitude       string `json:"latitude"`
+		Longtitude     string `json:"longtitude"`
+		TimeLocation   string `json:"time_location"`
+		Day            string `json:"day"`
+		Index          int    `json:"index"` // index at which to update (or append if out-of-range)
 	}
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request", "details": err.Error()})
 	}
 
-	if err := h.service.AddTripLocation(planID, body.NewPlaceID, body.TimeLocation, body.Day, body.Index); err != nil {
+	// ใช้ body.PlaceID แทน body.NewPlaceID
+	if err := h.service.AddTripLocation(planID, body.PlaceID, body.TimeLocation, body.Day, body.Index); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error", "details": err.Error()})
 	}
 
