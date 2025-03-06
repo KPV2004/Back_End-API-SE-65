@@ -29,6 +29,7 @@ type Plan struct {
 	StartTime     string     `json:"start_time" example:"16:53:44.581Z"`
 	EndDate       string     `json:"end_date" example:"2025-01-01"`
 	EndTime       string     `json:"end_time" example:"16:53:44.581Z"`
+	Description   string     `json:"description" example:"1 Day Trip Description"`
 	TripLocation  [][]string `json:"trip_location" gorm:"type:jsonb;serializer:json" example:"[[\"place_id_1\", \"place_id_2\"], [\"place_id_3\", \"place_id_4\"]]"`
 	Visibility    bool       `json:"visibility" example:"true"`
 }
