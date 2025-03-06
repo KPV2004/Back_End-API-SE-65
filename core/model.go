@@ -17,21 +17,27 @@ type User struct {
 	UserPlanID  pq.StringArray `gorm:"type:text[]" json:"userplan_id" example:"[\"plan_id\", \"plan_id\"]"`
 }
 
+type TripLocation struct {
+	PlaceID      string `json:"place_id" example:"place_id_1"`
+	TimeLocation string `json:"time_location" example:"08:00AM"`
+	Day          string `json:"day" example:"Monday"`
+}
+
 type Plan struct {
-	PlanID        string     `gorm:"primaryKey" json:"plan_id" example:"4e63bbd1-1f39-41cd-a832-a18496ac4f11"`
-	AuthorEmail   string     `json:"author_email" example:"user@example.com"`
-	AuthorImg     string     `json:"author_img" example:"https://example.com/image.jpg"`
-	TripName      string     `json:"trip_name" example:"BangkokTrip"`
-	RegionLabel   string     `json:"region_label" example:"Central Thailand"`
-	ProvinceLabel string     `json:"province_label" example:"Bangkok"`
-	ProvinceID    string     `json:"province_id" example:"123"`
-	StartDate     string     `json:"start_date" example:"2025-01-01"`
-	StartTime     string     `json:"start_time" example:"16:53:44.581Z"`
-	EndDate       string     `json:"end_date" example:"2025-01-01"`
-	EndTime       string     `json:"end_time" example:"16:53:44.581Z"`
-	Description   string     `json:"description" example:"1 Day Trip Description"`
-	TripLocation  [][]string `json:"trip_location" gorm:"type:jsonb;serializer:json" example:"[[\"place_id_1\", \"place_id_2\"], [\"place_id_3\", \"place_id_4\"]]"`
-	Visibility    bool       `json:"visibility" example:"true"`
+	PlanID        string         `gorm:"primaryKey" json:"plan_id" example:"4e63bbd1-1f39-41cd-a832-a18496ac4f11"`
+	AuthorEmail   string         `json:"author_email" example:"user@example.com"`
+	AuthorImg     string         `json:"author_img" example:"https://example.com/image.jpg"`
+	TripName      string         `json:"trip_name" example:"BangkokTrip"`
+	RegionLabel   string         `json:"region_label" example:"Central Thailand"`
+	ProvinceLabel string         `json:"province_label" example:"Bangkok"`
+	ProvinceID    string         `json:"province_id" example:"123"`
+	StartDate     string         `json:"start_date" example:"2025-01-01"`
+	StartTime     string         `json:"start_time" example:"16:53:44.581Z"`
+	EndDate       string         `json:"end_date" example:"2025-01-01"`
+	EndTime       string         `json:"end_time" example:"16:53:44.581Z"`
+	Description   string         `json:"description" example:"1 Day Trip Description"`
+	TripLocation  []TripLocation `json:"trip_location" gorm:"type:jsonb;serializer:json" example:"[{\"place_id\":\"place_id_1\", \"time_location\":\"08:00AM\", \"day\":\"Monday\"}, {\"place_id\":\"place_id_2\", \"time_location\":\"10:00AM\", \"day\":\"Monday\"}]"`
+	Visibility    bool           `json:"visibility" example:"true"`
 }
 
 type Verification struct {
