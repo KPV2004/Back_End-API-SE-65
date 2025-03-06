@@ -122,12 +122,12 @@ func (r *GormUserRepository) CreatePlan(userPlan core.Plan) error {
 }
 func (r *GormUserRepository) AddTripLocation(planID, newPlaceID, timeLocation, day string, index int) error {
 	var plan core.Plan
-	// Retrieve the plan by planID
+	// ดึงข้อมูลแผนจากฐานข้อมูลตาม planID
 	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
 		return err
 	}
 
-	// Initialize TripLocation if nil
+	// ตรวจสอบว่า TripLocation เป็น nil หรือไม่ ถ้าเป็น nil ให้ตั้งค่าเป็น array ว่าง ๆ
 	if plan.TripLocation == nil {
 		plan.TripLocation = []core.TripLocation{}
 	}
@@ -138,12 +138,15 @@ func (r *GormUserRepository) AddTripLocation(planID, newPlaceID, timeLocation, d
 		Day:          day,
 	}
 
-	// If the provided index is out of range, append the new location
-	if index < 0 || index >= len(plan.TripLocation) {
+	// ถ้า index ไม่อยู่ในขอบเขต (น้อยกว่า 0 หรือมากกว่าความยาวของ slice) ให้ append
+	if index < 0 || index > len(plan.TripLocation) {
 		plan.TripLocation = append(plan.TripLocation, newLocation)
 	} else {
-		// Otherwise, update the location at the provided index
-		plan.TripLocation[index] = newLocation
+		// Insert newLocation ที่ตำแหน่ง index โดยเลื่อน element ที่มีอยู่ไปด้านหลัง
+		plan.TripLocation = append(
+			plan.TripLocation[:index],
+			append([]core.TripLocation{newLocation}, plan.TripLocation[index:]...)...,
+		)
 	}
 
 	// Save the updated plan
