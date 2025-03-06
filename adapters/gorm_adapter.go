@@ -90,6 +90,12 @@ func (r *GormUserRepository) UpdateUser(user core.User, email string) error {
 	return nil
 }
 
+func (r *GormUserRepository) UpdatePlane(plan core.Plan, planID string) error {
+  if result := r.db.Model(&plan).Where("plan_id = ?", planID).Updates(&plan); result.Error != nil {
+    return result.Error
+  }
+  return nil
+}
 func (r *GormUserRepository) UpdateUserPlanByEmail(email string, newPlanID string) error {
 	var user core.User
 	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
