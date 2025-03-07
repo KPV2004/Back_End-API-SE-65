@@ -109,7 +109,7 @@ func main() {
 	api.Put("/user/updateuserplan/:email", middleware.AuthMiddleware, userHandler.UserUpdatePlanByEmail)
 	api.Delete("/user/deleteuserplanbyemail/:email", middleware.AuthMiddleware, userHandler.DeleteUserPlanByEmailHandler)
 	api.Get("/plan/gettriplocation/:id", userHandler.GetTripLocationHandler)
-	api.Get("/plan/getplanbyid/:id", middleware.AuthMiddleware, userHandler.GetPlanByIDHandler)
+	api.Get("/plan/getplanbyid/:id", userHandler.GetPlanByIDHandler)
 	api.Get("/plan/getpublicplan", userHandler.GetVisiblePlansHandler)
   api.Put("/plan/updateplan/:id", middleware.AuthMiddleware, userHandler.UpdatePlanByID)
 	api.Delete("/plan/deleteplanbyid/:id", middleware.AuthMiddleware, userHandler.DeletePlanByIDHandler)
