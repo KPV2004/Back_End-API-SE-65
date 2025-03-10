@@ -309,7 +309,7 @@ func (h *HttpUserHandler) CreatePlanTrip(c *fiber.Ctx) error {
 // @Router /api/v1/plan/addtriplocation/{id} [put]
 func (h *HttpUserHandler) AddTripLocationHandler(c *fiber.Ctx) error {
 	planID := c.Params("id")
-
+	fmt.Print("This" + planID)
 	var body core.TripLocation
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -402,15 +402,43 @@ func (h *HttpUserHandler) GetVisiblePlansHandler(c *fiber.Ctx) error {
 }
 
 func (h *HttpUserHandler) UpdatePlanByID(c *fiber.Ctx) error {
-  planID := c.Params("id")
+	planID := c.Params("id")
 	var planData core.Plan
 
-  if err := c.BodyParser(&planData); err != nil {
-    return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error":"Invalid request body"})
-  }
-  if error := h.service.UpdatePlan(planData, planID); error != nil {
-    return error
-  }
-  return c.JSON(fiber.Map{"message":"Update Plan is Sucessfully"})
+	if err := c.BodyParser(&planData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
+	}
+	if error := h.service.UpdatePlan(planData, planID); error != nil {
+		return error
+	}
+	return c.JSON(fiber.Map{"message": "Update Plan is Sucessfully"})
 
+}
+
+func (h *HttpUserHandler) DeleteTripLocationHandler(c *fiber.Ctx) error {
+	planID := c.Params("id")
+	if planID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "plan_id is required"})
+	}
+
+	// Parse JSON body to get the target place_id
+	var body struct {
+		PlaceID string `json:"place_id"`
+	}
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body", "details": err.Error()})
+	}
+	if body.PlaceID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "place_id is required in the request body"})
+	}
+
+	// Call the service layer to delete the trip location
+	if err := h.service.DeleteTripLocation(planID, body.PlaceID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to delete trip location",
+			"details": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Trip location deleted successfully"})
 }

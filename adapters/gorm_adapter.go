@@ -91,10 +91,10 @@ func (r *GormUserRepository) UpdateUser(user core.User, email string) error {
 }
 
 func (r *GormUserRepository) UpdatePlane(plan core.Plan, planID string) error {
-  if result := r.db.Model(&plan).Where("plan_id = ?", planID).Updates(&plan); result.Error != nil {
-    return result.Error
-  }
-  return nil
+	if result := r.db.Model(&plan).Where("plan_id = ?", planID).Updates(&plan); result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
 func (r *GormUserRepository) UpdateUserPlanByEmail(email string, newPlanID string) error {
 	var user core.User
@@ -200,4 +200,33 @@ func (r *GormUserRepository) GetVisiblePlans() ([]core.Plan, error) {
 		return nil, err
 	}
 	return plans, nil
+}
+func (r *GormUserRepository) DeleteTripLocation(planID, targetPlaceID string) error {
+	var plan core.Plan
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return err
+	}
+
+	var updatedLocations []core.TripLocation
+	found := false
+	for _, loc := range plan.TripLocation {
+		if loc.PlaceID == targetPlaceID {
+			found = true
+			continue
+		}
+		updatedLocations = append(updatedLocations, loc)
+	}
+
+	if !found {
+		return fmt.Errorf("TripLocation with PlaceID %s not found", targetPlaceID)
+	}
+
+	// อัปเดต TripLocation ด้วย slice ที่ถูกกรองแล้ว
+	plan.TripLocation = updatedLocations
+
+	if err := r.db.Save(&plan).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

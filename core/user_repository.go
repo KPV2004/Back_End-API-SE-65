@@ -9,7 +9,7 @@ type UserRepository interface {
 	VerificationOTP(email string, OTP string) error
 	UpdateUser(user User, email string) error
 	UpdateUserPlanByEmail(email string, newPlanID string) error
-  UpdatePlane(plan Plan, planID string) error
+	UpdatePlane(plan Plan, planID string) error
 	CreatePlan(userPlan Plan) error
 	AddTripLocation(planID string, newLocation TripLocation, index int) error
 	GetTripLocationByPlanID(planID string) ([]TripLocation, error)
@@ -17,4 +17,5 @@ type UserRepository interface {
 	DeletePlanByID(planID string) error
 	DeleteUserPlanByEmail(email, planID string) error
 	GetVisiblePlans() ([]Plan, error)
+	DeleteTripLocation(planID, targetPlaceID string) error
 }
