@@ -230,3 +230,20 @@ func (r *GormUserRepository) DeleteTripLocation(planID, targetPlaceID string) er
 
 	return nil
 }
+
+func (r *GormUserRepository) UpdateAuthorImg(planID, newImg string) error {
+	var plan core.Plan
+	// Retrieve the plan by planID
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return err
+	}
+
+	// Update the AuthorImg field
+	plan.AuthorImg = newImg
+
+	// Save the changes
+	if err := r.db.Save(&plan).Error; err != nil {
+		return err
+	}
+	return nil
+}
