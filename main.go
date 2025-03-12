@@ -100,7 +100,7 @@ func main() {
 	// API Routes
 	api := app.Group("/api/v1")
 	api.Post("/user/register", userHandler.RegisterUser)
-	api.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
+	api.Get("/user/getuser/:email", userHandler.GetUser)
 	api.Get("/user/genotp/:email", userHandler.GenOTP)
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Post("/user/createplan", middleware.AuthMiddleware, userHandler.CreatePlanTrip)
@@ -112,6 +112,7 @@ func main() {
 	api.Get("/plan/getplanbyid/:id", userHandler.GetPlanByIDHandler)
 	api.Get("/plan/getpublicplan", userHandler.GetVisiblePlansHandler)
 	api.Put("/plan/updateplan/:id", middleware.AuthMiddleware, userHandler.UpdatePlanByID)
+	api.Put("/plan/updateauthorimg/:id", userHandler.UpdateAuthorImgHandler)
 	api.Delete("/plan/deleteplanbyid/:id", middleware.AuthMiddleware, userHandler.DeletePlanByIDHandler)
 	api.Post("/plan/addtriplocation/:id", userHandler.AddTripLocationHandler)
 	api.Delete("/plan/deletetriplocation/:id", userHandler.DeleteTripLocationHandler)

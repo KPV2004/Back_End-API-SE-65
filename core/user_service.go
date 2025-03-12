@@ -18,6 +18,7 @@ type UserService interface {
 	DeleteUserPlanByEmail(email, planID string) error
 	GetVisiblePlans() ([]Plan, error)
 	DeleteTripLocation(planID, targetPlaceID string) error
+	UpdateAuthorImg(planID, newImg string) error
 }
 
 type userServiceImpl struct {
@@ -138,6 +139,13 @@ func (s *userServiceImpl) GetVisiblePlans() ([]Plan, error) {
 
 func (s *userServiceImpl) DeleteTripLocation(planID, targetPlaceID string) error {
 	if err := s.repo.DeleteTripLocation(planID, targetPlaceID); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userServiceImpl) UpdateAuthorImg(planID, newImg string) error {
+	if err := s.repo.UpdateAuthorImg(planID, newImg); err != nil {
 		return err
 	}
 	return nil

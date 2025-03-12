@@ -18,4 +18,5 @@ type UserRepository interface {
 	DeleteUserPlanByEmail(email, planID string) error
 	GetVisiblePlans() ([]Plan, error)
 	DeleteTripLocation(planID, targetPlaceID string) error
+	UpdateAuthorImg(planID, newImg string) error
 }
