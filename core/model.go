@@ -47,6 +47,7 @@ type Plan struct {
 	Description   string         `json:"description" example:"1 Day Trip Description"`
 	TripLocation  []TripLocation `json:"trip_location" gorm:"type:jsonb;serializer:json" example:"[{\"place_id\":\"place_id_1\", \"time_location\":\"08:00AM\", \"day\":\"Monday\"}, {\"place_id\":\"place_id_2\", \"time_location\":\"10:00AM\", \"day\":\"Monday\"}]"`
 	Visibility    bool           `json:"visibility" example:"true"`
+	CreatedBy     string         `json:"created_by" AI:"`
 }
 
 type Verification struct {
