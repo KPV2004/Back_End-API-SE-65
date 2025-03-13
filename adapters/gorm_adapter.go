@@ -201,6 +201,13 @@ func (r *GormUserRepository) GetVisiblePlans() ([]core.Plan, error) {
 	}
 	return plans, nil
 }
+func (r *GormUserRepository) GetAllPlans() ([]core.Plan, error) {
+	var plans []core.Plan
+	if err := r.db.Find(&plans).Error; err != nil {
+		return nil, err
+	}
+	return plans, nil
+}
 func (r *GormUserRepository) DeleteTripLocation(planID, targetPlaceID string) error {
 	var plan core.Plan
 	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {

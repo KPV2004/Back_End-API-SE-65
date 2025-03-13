@@ -18,6 +18,7 @@ type UserService interface {
 	DeleteUserPlanByEmail(email, planID string) error
 	GetVisiblePlans() ([]Plan, error)
 	DeleteTripLocation(planID, targetPlaceID string) error
+	GetAllPlans() ([]Plan, error)
 	UpdateAuthorImg(planID, newImg string) error
 	GetAllUsers() ([]User, error)
 }
@@ -157,5 +158,12 @@ func (s *userServiceImpl) GetAllUsers() ([]User, error) {
 		return nil, err
 	} else {
 		return users, nil
+	}
+}
+func (s *userServiceImpl) GetAllPlans() ([]Plan, error) {
+	if plans, err := s.repo.GetAllPlans(); err != nil {
+		return nil, err
+	} else {
+		return plans, nil
 	}
 }

@@ -279,6 +279,14 @@ func (h *HttpUserHandler) UploadImage(c *fiber.Ctx) error {
 	})
 }
 
+func (h *HttpUserHandler) GetAllPlans(c *fiber.Ctx) error {
+	plans, err := h.service.GetAllPlans()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to retrieve plans"})
+	}
+	return c.JSON(plans)
+}
+
 // @Summary Update User Plan
 // @Description Update User Plan by Email
 // @Tags User

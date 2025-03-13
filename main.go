@@ -120,6 +120,7 @@ func main() {
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
 	api.Get("/admin/getAllUsers", middleware.JWTProtected(), userHandler.GetAllUsers)
+	api.Get("/admin/getAllPlans", middleware.JWTProtected(), userHandler.GetAllPlans)
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	db.AutoMigrate(&core.Admin{})
