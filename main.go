@@ -101,6 +101,7 @@ func main() {
 	api := app.Group("/api/v1")
 	api.Post("/user/register", userHandler.RegisterUser)
 	api.Get("/user/getuser/:email", middleware.AuthMiddleware, userHandler.GetUser)
+	// api.Get("/user/getuser/:email", middleware.JWTProtected(), userHandler.GetUser)
 	api.Get("/user/genotp/:email", userHandler.GenOTP)
 	api.Post("/user/verifyotp", userHandler.VerifyOTP)
 	api.Post("/user/createplan", middleware.AuthMiddleware, userHandler.CreatePlanTrip)
@@ -118,6 +119,7 @@ func main() {
 	api.Delete("/plan/deletetriplocation/:id", middleware.AuthMiddleware, userHandler.DeleteTripLocationHandler)
 	api.Post("/admin/register", userHandler.RegisterAdmin)
 	api.Post("/admin/login", userHandler.LoginAdmin)
+	api.Get("/admin/getAllUsers", middleware.JWTProtected(), userHandler.GetAllUsers)
 	// Migrate the schema
 	db.AutoMigrate(&core.User{})
 	db.AutoMigrate(&core.Admin{})

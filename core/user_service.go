@@ -19,6 +19,7 @@ type UserService interface {
 	GetVisiblePlans() ([]Plan, error)
 	DeleteTripLocation(planID, targetPlaceID string) error
 	UpdateAuthorImg(planID, newImg string) error
+	GetAllUsers() ([]User, error)
 }
 
 type userServiceImpl struct {
@@ -149,4 +150,12 @@ func (s *userServiceImpl) UpdateAuthorImg(planID, newImg string) error {
 		return err
 	}
 	return nil
+}
+
+func (s *userServiceImpl) GetAllUsers() ([]User, error) {
+	if users, err := s.repo.GetAllUsers(); err != nil {
+		return nil, err
+	} else {
+		return users, nil
+	}
 }

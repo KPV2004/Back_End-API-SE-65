@@ -562,13 +562,37 @@
         "core.TripLocation": {
             "type": "object",
             "properties": {
+                "categorie_label": {
+                    "type": "string",
+                    "example": "Shopping"
+                },
                 "day": {
                     "type": "string",
-                    "example": "Monday"
+                    "example": "1"
+                },
+                "introduction": {
+                    "type": "string",
+                    "example": "intro to Place1"
+                },
+                "latitude": {
+                    "type": "string",
+                    "example": "11.111"
+                },
+                "longtitude": {
+                    "type": "string",
+                    "example": "11.111"
                 },
                 "place_id": {
                     "type": "string",
                     "example": "place_id_1"
+                },
+                "place_label": {
+                    "type": "string",
+                    "example": "Place1"
+                },
+                "thumbnail_url": {
+                    "type": "string",
+                    "example": "https://example.com/image.jpg"
                 },
                 "time_location": {
                     "type": "string",

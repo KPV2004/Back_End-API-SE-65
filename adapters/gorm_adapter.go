@@ -247,3 +247,11 @@ func (r *GormUserRepository) UpdateAuthorImg(planID, newImg string) error {
 	}
 	return nil
 }
+
+func (r *GormUserRepository) GetAllUsers() ([]core.User, error) {
+	var users []core.User
+	if err := r.db.Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}

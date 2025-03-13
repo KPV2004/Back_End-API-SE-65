@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"go-server/core"
+	"go-server/middleware"
 	"log"
 	"math/rand"
 	"os"
@@ -12,6 +13,9 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt"
+
+	"github.com/google/uuid"
 )
 
 type HttpUserHandler struct {
@@ -168,21 +172,46 @@ func (h *HttpUserHandler) RegisterAdmin(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param admin body core.Admin true "Admin Data"
-// @Success 201 {object} map[string]string
+// @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/admin/login [post]
 func (h *HttpUserHandler) LoginAdmin(c *fiber.Ctx) error {
 	var admin core.Admin
 
+	// อ่านข้อมูลจาก request
 	if err := c.BodyParser(&admin); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid Request"})
 	}
+
 	if err := h.service.LoginAdmin(admin); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Server Error"})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "Login Sucessfully!"})
+	// Generate JWT token
+	claims := jwt.MapClaims{
+		"sub": admin.Username,
+		"exp": time.Now().Add(time.Hour * 24).Unix(), // หมดอายุภายใน 24 ชั่วโมง
+		"iat": time.Now().Unix(),
+		"jti": uuid.New().String(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	t, err := token.SignedString(middleware.SecretKey)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate token"})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"token": t})
+}
+
+func (h *HttpUserHandler) GetAllUsers(c *fiber.Ctx) error {
+	users, err := h.service.GetAllUsers()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to retrieve users"})
+	}
+	return c.JSON(users)
 }
 
 // @Summary Update User data

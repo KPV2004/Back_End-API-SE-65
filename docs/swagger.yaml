@@ -11,11 +11,29 @@ definitions:
     type: object
   core.TripLocation:
     properties:
+      categorie_label:
+        example: Shopping
+        type: string
       day:
-        example: Monday
+        example: "1"
+        type: string
+      introduction:
+        example: intro to Place1
+        type: string
+      latitude:
+        example: "11.111"
+        type: string
+      longtitude:
+        example: "11.111"
         type: string
       place_id:
         example: place_id_1
+        type: string
+      place_label:
+        example: Place1
+        type: string
+      thumbnail_url:
+        example: https://example.com/image.jpg
         type: string
       time_location:
         example: 08:00AM

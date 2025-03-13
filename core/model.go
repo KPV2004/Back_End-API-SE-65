@@ -2,9 +2,11 @@ package core
 
 import (
 	"github.com/lib/pq"
+	"gorm.io/gorm"
 )
 
 type User struct {
+	gorm.Model
 	UserID      string         `gorm:"primaryKey" json:"userid" example:"5e63bbd1-1f39-41cd-a832-a18496ac4f11"`
 	Image       string         `json:"image" example:"https://example.com/image.jpg"`
 	Username    string         `json:"username" example:"test_user"`
