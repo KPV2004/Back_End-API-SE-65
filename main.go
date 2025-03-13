@@ -115,6 +115,7 @@ func main() {
 	api.Post("/plan/addtriplocation/:id", middleware.AuthMiddleware, userHandler.AddTripLocationHandler)
 	api.Put("/plan/updateplan/:id", middleware.AuthMiddleware, userHandler.UpdatePlanByID)
 	api.Put("/plan/updateauthorimg/:id", middleware.AuthMiddleware, userHandler.UpdateAuthorImgHandler)
+	api.Put("/plan/updateauthorname/:id", middleware.AuthMiddleware, userHandler.UpdateAuthorNameHandler)
 	api.Delete("/plan/deleteplanbyid/:id", middleware.AuthMiddleware, userHandler.DeletePlanByIDHandler)
 	api.Delete("/plan/deletetriplocation/:id", middleware.AuthMiddleware, userHandler.DeleteTripLocationHandler)
 	api.Post("/admin/register", userHandler.RegisterAdmin)

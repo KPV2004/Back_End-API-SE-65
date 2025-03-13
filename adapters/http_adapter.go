@@ -512,3 +512,36 @@ func (h *HttpUserHandler) UpdateAuthorImgHandler(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "author_img updated successfully"})
 }
+
+func (h *HttpUserHandler) UpdateAuthorNameHandler(c *fiber.Ctx) error {
+	// Retrieve planID from URL parameter (e.g., /plan/:id/updateauthorimg)
+	planID := c.Params("id")
+	if planID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "plan_id is required"})
+	}
+
+	// Parse JSON body to get new author_img
+	var body struct {
+		AuthorName string `json:"author_name"`
+	}
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":   "Invalid request body",
+			"details": err.Error(),
+		})
+	}
+
+	if body.AuthorName == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "author_name is required"})
+	}
+
+	// Call the service layer to update the author_img
+	if err := h.service.UpdateAuthorName(planID, body.AuthorName); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to update author_name",
+			"details": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "author_name updated successfully"})
+}

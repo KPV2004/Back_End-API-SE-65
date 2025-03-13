@@ -20,6 +20,7 @@ type UserService interface {
 	DeleteTripLocation(planID, targetPlaceID string) error
 	GetAllPlans() ([]Plan, error)
 	UpdateAuthorImg(planID, newImg string) error
+	UpdateAuthorName(planID, newName string) error
 	GetAllUsers() ([]User, error)
 }
 
@@ -148,6 +149,12 @@ func (s *userServiceImpl) DeleteTripLocation(planID, targetPlaceID string) error
 
 func (s *userServiceImpl) UpdateAuthorImg(planID, newImg string) error {
 	if err := s.repo.UpdateAuthorImg(planID, newImg); err != nil {
+		return err
+	}
+	return nil
+}
+func (s *userServiceImpl) UpdateAuthorName(planID, newName string) error {
+	if err := s.repo.UpdateAuthorName(planID, newName); err != nil {
 		return err
 	}
 	return nil

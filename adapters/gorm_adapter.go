@@ -254,6 +254,21 @@ func (r *GormUserRepository) UpdateAuthorImg(planID, newImg string) error {
 	}
 	return nil
 }
+func (r *GormUserRepository) UpdateAuthorName(planID, newName string) error {
+	var plan core.Plan
+	// Retrieve the plan by planID
+	if err := r.db.First(&plan, "plan_id = ?", planID).Error; err != nil {
+		return err
+	}
+
+	plan.AuthorName = newName
+
+	// Save the changes
+	if err := r.db.Save(&plan).Error; err != nil {
+		return err
+	}
+	return nil
+}
 
 func (r *GormUserRepository) GetAllUsers() ([]core.User, error) {
 	var users []core.User
