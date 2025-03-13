@@ -459,18 +459,20 @@ func (h *HttpUserHandler) DeleteTripLocationHandler(c *fiber.Ctx) error {
 	}
 
 	// Parse JSON body to get the target place_id
-	var body struct {
+	type body struct {
 		PlaceID string `json:"place_id"`
 	}
-	if err := c.BodyParser(&body); err != nil {
+
+	var req body
+	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body", "details": err.Error()})
 	}
-	if body.PlaceID == "" {
+	if req.PlaceID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "place_id is required in the request body"})
 	}
 
 	// Call the service layer to delete the trip location
-	if err := h.service.DeleteTripLocation(planID, body.PlaceID); err != nil {
+	if err := h.service.DeleteTripLocation(planID, req.PlaceID); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to delete trip location",
 			"details": err.Error(),
