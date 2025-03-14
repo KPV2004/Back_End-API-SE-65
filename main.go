@@ -44,10 +44,15 @@ func main() {
 	app := fiber.New()
 	// Configure your PostgreSQL database details here
 
+	// app.Use(cors.New(cors.Config{
+	// 	AllowOrigins: "*", // Change this to your frontend domain for security
+	// 	AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
+	// 	AllowHeaders: "Origin, Content-Type, Accept",
+	// }))
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*", // Change this to your frontend domain for security
+		AllowOrigins: "*", // Change this to specific frontend domains for better security
 		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
-		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 	}))
 
 	dsn := fmt.Sprintf("host=%s port=%d user=%s "+
